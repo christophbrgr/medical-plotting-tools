@@ -57,3 +57,28 @@ def pad3D(image, newshape):
     bound_x = offset_x + image.shape[0]
     res[offset_x:bound_x,offset_y:bound_y,offset_z:bound_z] = image
     return res
+
+def pad2D(image, newshape):
+    """
+    Adds padding to the passed 3D numpy array
+    and places the input image in the center of
+    the newly created image with shape newshape
+
+    args:
+        image(np.ndarray): arbitrary numpy array with 3 dims
+        newshape(3-tuple, int): target shape for padding
+                                has to be smaller than the
+                                shape of the image
+    returns:
+        numpy array with shape=newshape
+    """
+    for (i,j) in zip(image.shape, newshape):
+        if j < i:
+            raise IOError('Target shape cannot be smaller than input shape!')
+    res = np.zeros(newshape)
+    offset_y = int((newshape[1]-image.shape[1])/2)
+    offset_x = int((newshape[0]-image.shape[0])/2)
+    bound_y = offset_y + image.shape[1]
+    bound_x = offset_x + image.shape[0]
+    res[offset_x:bound_x,offset_y:bound_y] = image
+    return res
